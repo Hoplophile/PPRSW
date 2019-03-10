@@ -14,15 +14,13 @@ void Led0Blink( void *pvParameters ){
 	while(1){
 		Delay(1000);
 		Led_Toggle(0);
-		vTaskDelay(1000);
-		Led_Toggle(0);
 	}
 }
 void Led1Blink( void *pvParameters ){
 
 	while(1){
 		Led_Toggle(1);
-		vTaskDelay(50);
+		Delay(1000);
 	}
 }
 
@@ -31,7 +29,7 @@ int main(void){
 	Led_Init();
 	
 	xTaskCreate(Led1Blink, NULL , 100 , NULL, 1 , NULL );	
-	xTaskCreate(Led0Blink, NULL , 100 , NULL, 2 , NULL );
+	xTaskCreate(Led0Blink, NULL , 100 , NULL, 1 , NULL );
 	vTaskStartScheduler();
 	
 	while(1);
