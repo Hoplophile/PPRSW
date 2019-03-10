@@ -15,26 +15,27 @@ void LedBlink( void *pvParameters ){
 	}
 }
 
-void LedCtrl( void *pvFreqParam ){
+void TaskSuspender ( void *pHandle ){
+	
+	TaskHandle_t thTask = *((TaskHandle_t*)pHandle); 
 	
 	while(1){
-		(*((struct BlinkParams*)pvFreqParam)).ucFrequency = (*((struct BlinkParams*)pvFreqParam)).ucFrequency + 1;
+		vTaskSuspend(thTask);
 		vTaskDelay(1000);
-		(*((struct BlinkParams*)pvFreqParam)).ucFrequency = (*((struct BlinkParams*)pvFreqParam)).ucFrequency + 1;
-		if((*((struct BlinkParams*)pvFreqParam)).ucLedIndex == 3) (*((struct BlinkParams*)pvFreqParam)).ucLedIndex = 0;
-		else	(*((struct BlinkParams*)pvFreqParam)).ucLedIndex = (*((struct BlinkParams*)pvFreqParam)).ucLedIndex + 1;
+		vTaskResume(thTask);
 		vTaskDelay(1000);
 	}
 }
 
 int main( void ) {
 
-	sBlinkParams.ucFrequency = 1;
+	TaskHandle_t thBlinkHandle;
+	sBlinkParams.ucFrequency = 10;
 	sBlinkParams.ucLedIndex = 0;
 	
 	Led_Init();
-	xTaskCreate(LedBlink, NULL , 100 , &sBlinkParams, 1 , NULL );
-	xTaskCreate(LedCtrl, NULL , 100 , &sBlinkParams, 2 , NULL );
+	xTaskCreate(LedBlink, NULL , 100 , &sBlinkParams, 1 , &thBlinkHandle );
+	xTaskCreate(TaskSuspender, NULL , 100 , &thBlinkHandle, 2 , NULL );
 	vTaskStartScheduler();
 
 	while(1) {};
