@@ -16,9 +16,11 @@ void Pulse_LED0( void *pSemaphore ){
 
 void PulseTrigger( void *pSemaphore ){
 	
+	vTaskDelay(1000/3);
+	
 	while(1){
 		xSemaphoreGive(*((xSemaphoreHandle*)pSemaphore));
-		vTaskDelay(1000);
+		vTaskDelay(1000/3);
 	}
 }
 
