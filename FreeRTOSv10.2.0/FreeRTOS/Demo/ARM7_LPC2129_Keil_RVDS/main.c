@@ -1,50 +1,23 @@
- #include "FreeRTOS.h"
+#include "FreeRTOS.h"
 #include "task.h"
 #include "led.h"
 #include "semphr.h"
+#include "string.h"
+#include "uart.h"
 
-void Pulse_LED0( void *pSemaphore ){
-
-	while(1){
-		if(xSemaphoreTake(*((xSemaphoreHandle*)pSemaphore), portMAX_DELAY) == pdTRUE) {
-			Led_Toggle(0);
-			vTaskDelay(100);
-			Led_Toggle(0);
-		}
-	}
-}
-
-void Pulse_LED1( void *pSemaphore ){
-
-	while(1){
-		if(xSemaphoreTake(*((xSemaphoreHandle*)pSemaphore), portMAX_DELAY) == pdTRUE) {
-			Led_Toggle(1);
-			vTaskDelay(100);
-			Led_Toggle(1);
-		}
-	}
-}
-
-void PulseTrigger( void *pSemaphore ){
-	
-	vTaskDelay(1000/3);
+void LettersTx (void *pvParameters){
 	
 	while(1){
-		xSemaphoreGive(*((xSemaphoreHandle*)pSemaphore));
-		vTaskDelay(1000/3);
+		Transmiter_SendString("-ABCDEEFGH-\n");
+		while (Transmiter_GetStatus()!=FREE){};
+		vTaskDelay(300);
 	}
 }
-
-int main( void ) {
-
-	xSemaphoreHandle xSemaphore;
+int main( void ){
 	
-	Led_Init();
-	vSemaphoreCreateBinary(xSemaphore);
-	xTaskCreate(Pulse_LED0, NULL , 100 , &xSemaphore , 2 , NULL );
-	xTaskCreate(Pulse_LED1, NULL , 100 , &xSemaphore , 2 , NULL );
-	xTaskCreate(PulseTrigger, NULL , 100 , &xSemaphore, 1 , NULL );
+	UART_InitWithInt(9600);
+	xTaskCreate(LettersTx, NULL, 128, NULL, 1, NULL );
 	vTaskStartScheduler();
-
+	
 	while(1) {};
 }
