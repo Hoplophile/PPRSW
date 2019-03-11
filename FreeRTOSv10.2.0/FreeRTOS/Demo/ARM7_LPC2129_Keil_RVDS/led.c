@@ -10,7 +10,7 @@ enum StepDirection {Left, Right};
 
 void Led_Init(){
 	IO1DIR = (IO1DIR | LED0_bm | LED1_bm | LED2_bm | LED3_bm);
-	IO1SET = LED0_bm;
+	//IO1SET = LED0_bm;
 }
 
 void Led_On(unsigned char ucLedIndeks){
