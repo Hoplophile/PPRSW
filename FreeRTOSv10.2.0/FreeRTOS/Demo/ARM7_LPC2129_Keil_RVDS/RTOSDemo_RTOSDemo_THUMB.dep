@@ -1,6 +1,6 @@
 Dependencies for Project 'RTOSDemo', Target 'RTOSDemo_THUMB': (DO NOT MODIFY !)
 F (.\Startup.s)(0x5C88F6EE)(--cpu ARM7TDMI --pd "__EVAL SETA 1" -g --apcs=interwork -I..\..\Source\portable\RVDS\ARM7_LPC21xx-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\CMSIS\Include-I C:\Keil\ARM\Inc\Philips--list .\startup.lst --xref -o .\bin\startup.o --depend .\bin\startup.d)
-F (.\main.c)(0x5C8907B4)(--thumb -c --cpu ARM7TDMI -D__EVAL -g -O0 --apcs=interwork -I. -I..\..\Source\portable\RVDS\ARM7_LPC21xx -I..\Common\include -I..\..\Source\include-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\CMSIS\Include-I C:\Keil\ARM\Inc\Philips-DARM7_LPC21xx_KEIL_RVDS -DKEIL_THUMB_INTERWORK -o .\bin\main.o --omf_browse .\bin\main.crf --depend .\bin\main.d)
+F (.\main.c)(0x5C890A04)(--thumb -c --cpu ARM7TDMI -D__EVAL -g -O0 --apcs=interwork -I. -I..\..\Source\portable\RVDS\ARM7_LPC21xx -I..\Common\include -I..\..\Source\include-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\CMSIS\Include-I C:\Keil\ARM\Inc\Philips-DARM7_LPC21xx_KEIL_RVDS -DKEIL_THUMB_INTERWORK -o .\bin\main.o --omf_browse .\bin\main.crf --depend .\bin\main.d)
 I (C:\Users\student\Documents\Keil\PPRSW\FreeRTOSv10.2.0\FreeRTOS\Source\include\FreeRTOS.h)(0x5C88F6EE)
 I (C:\Keil\ARM\ARMCC\include\stddef.h)(0x51C88A34)
 I (C:\Keil\ARM\ARMCC\include\stdint.h)(0x51C88A34)
@@ -30,7 +30,9 @@ I (C:\Users\student\Documents\Keil\PPRSW\FreeRTOSv10.2.0\FreeRTOS\Demo\ARM7_LPC2
 I (C:\Users\student\Documents\Keil\PPRSW\FreeRTOSv10.2.0\FreeRTOS\Demo\ARM7_LPC2129_Keil_RVDS\string.h)(0x5C89049B)
 F (.\string.h)(0x5C89049B)()
 F (.\uart.h)(0x5C89049B)()
-F (.\keyboard.c)(0x5C890745)()
+F (.\keyboard.c)(0x5C890983)(--thumb -c --cpu ARM7TDMI -D__EVAL -g -O0 --apcs=interwork -I. -I..\..\Source\portable\RVDS\ARM7_LPC21xx -I..\Common\include -I..\..\Source\include-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\CMSIS\Include-I C:\Keil\ARM\Inc\Philips-DARM7_LPC21xx_KEIL_RVDS -DKEIL_THUMB_INTERWORK -o .\bin\keyboard.o --omf_browse .\bin\keyboard.crf --depend .\bin\keyboard.d)
+I (C:\Users\student\Documents\Keil\PPRSW\FreeRTOSv10.2.0\FreeRTOS\Demo\ARM7_LPC2129_Keil_RVDS\keyboard.h)(0x5C890745)
+I (C:\Keil\ARM\Inc\Philips\LPC21xx.H)(0x51C88C2C)
 F (.\keyboard.h)(0x5C890745)()
 F (..\..\Source\tasks.c)(0x5C88F6EE)(--thumb -c --cpu ARM7TDMI -D__EVAL -g -O0 --apcs=interwork -I. -I..\..\Source\portable\RVDS\ARM7_LPC21xx -I..\Common\include -I..\..\Source\include-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\CMSIS\Include-I C:\Keil\ARM\Inc\Philips-DARM7_LPC21xx_KEIL_RVDS -DKEIL_THUMB_INTERWORK -o .\bin\tasks.o --omf_browse .\bin\tasks.crf --depend .\bin\tasks.d)
 I (C:\Program Files\Keil\ARM\ARMCC\include\stdlib.h)(0x00000000)
