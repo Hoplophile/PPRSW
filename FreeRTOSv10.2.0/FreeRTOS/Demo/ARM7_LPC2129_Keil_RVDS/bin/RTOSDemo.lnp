@@ -4,6 +4,7 @@
 ".\bin\led.o"
 ".\bin\string.o"
 ".\bin\uart.o"
+".\bin\keyboard.o"
 ".\bin\tasks.o"
 ".\bin\list.o"
 ".\bin\queue.o"
