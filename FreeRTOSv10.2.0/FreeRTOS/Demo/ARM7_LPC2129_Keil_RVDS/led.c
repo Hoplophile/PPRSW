@@ -1,10 +1,12 @@
 #include "led.h"
 #include <LPC21xx.H>
 
-#define LED0_bm 1<<16
-#define LED1_bm 1<<17
-#define LED2_bm 1<<18
-#define LED3_bm 1<<19
+#define LED0_bm (1<<16)
+#define LED1_bm (1<<17)
+#define LED2_bm (1<<18)
+#define LED3_bm (1<<19)
+
+unsigned int uiLedReg = 0x0000, uiBitmask = 0x0000;
 
 enum StepDirection {Left, Right};
 
@@ -59,20 +61,19 @@ void Led_StepRight(){
 void Led_Toggle(unsigned char ucLedIndex){
 	switch(ucLedIndex){
 		case 0:
-			if((IO1SET&LED0_bm) == 0) IO1SET = LED0_bm;
-			else IO1CLR = LED0_bm;
+			uiBitmask = LED0_bm;
 			break;
 		case 1:
-			if((IO1SET&LED1_bm) == 0) IO1SET = LED1_bm;
-			else IO1CLR = LED1_bm;
+			uiBitmask = LED1_bm;
 			break;
 		case 2:
-			if((IO1SET&LED2_bm) == 0) IO1SET = LED2_bm;
-			else IO1CLR = LED2_bm;
+			uiBitmask = LED2_bm;
 			break;
 		case 3:
-			if((IO1SET&LED3_bm) == 0) IO1SET = LED3_bm;
-			else IO1CLR = LED3_bm;
+			uiBitmask = LED3_bm;
 			break;
 	}
+	uiLedReg = uiLedReg ^ uiBitmask;
+	IO1SET = uiLedReg;
+	IO1CLR = ~uiLedReg;
 }
