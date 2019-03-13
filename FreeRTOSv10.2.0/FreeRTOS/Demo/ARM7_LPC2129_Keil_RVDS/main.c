@@ -15,7 +15,7 @@ void LettersTx (void *pvParameters){
 }
 int main( void ){
 	
-	UART_InitWithInt(9600);
+	UART_InitWithInt(300);
 	xTaskCreate(LettersTx, NULL, 128, NULL, 1, NULL );
 	vTaskStartScheduler();
 	

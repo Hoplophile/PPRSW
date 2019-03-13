@@ -1,9 +1,9 @@
 .\bin\main.o: main.c
 .\bin\main.o: ..\..\Source\include\FreeRTOS.h
-.\bin\main.o: C:\Program Files\Keil\ARM\ARMCC\bin\..\include\stddef.h
-.\bin\main.o: C:\Program Files\Keil\ARM\ARMCC\bin\..\include\stdint.h
+.\bin\main.o: C:\Keil\ARM\ARMCC\bin\..\include\stddef.h
+.\bin\main.o: C:\Keil\ARM\ARMCC\bin\..\include\stdint.h
 .\bin\main.o: .\FreeRTOSConfig.h
-.\bin\main.o: C:\Program Files\Keil\ARM\Inc\Philips\lpc21xx.h
+.\bin\main.o: C:\Keil\ARM\Inc\Philips\lpc21xx.h
 .\bin\main.o: ..\..\Source\include\projdefs.h
 .\bin\main.o: ..\..\Source\include\portable.h
 .\bin\main.o: ..\..\Source\include\deprecated_definitions.h

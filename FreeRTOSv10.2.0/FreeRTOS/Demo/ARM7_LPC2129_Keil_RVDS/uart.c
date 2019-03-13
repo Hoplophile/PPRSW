@@ -130,17 +130,23 @@ __irq void UART0_Interrupt (void) {
 
 ////////////////////////////////////////////
 void UART_InitWithInt(unsigned int uiBaudRate){
+	
+	unsigned long ulDivisor, ulWantedClock;
+	ulWantedClock=uiBaudRate*16;
+	ulDivisor=15000000/ulWantedClock;
+	// UART
+	PINSEL0 = PINSEL0 | 0x55;                                     // ustawic piny uar0 odbiornik nadajnik
+	U0LCR  |= m8BIT_UART_WORD_LENGTH | mDIVISOR_LATCH_ACCES_BIT; // d³ugosc s³owa, DLAB = 1
+	U0DLL = ( unsigned char ) ( ulDivisor & ( unsigned long ) 0xff );
+	ulDivisor >>= 8;
+	U0DLM = ( unsigned char ) ( ulDivisor & ( unsigned long ) 0xff );
+	U0LCR  &= (~mDIVISOR_LATCH_ACCES_BIT);                       // DLAB = 0
+	U0IER  |= mRX_DATA_AVALIABLE_INTERRUPT_ENABLE | mTHRE_INTERRUPT_ENABLE ;               
 
-   // UART0
-   PINSEL0 = PINSEL0 | mP0_1_RX0_PIN_MODE | mP0_0_TX0_PIN_MODE;                      // ustawic pina na odbiornik uart0
-   U0LCR  |= m8BIT_UART_WORD_LENGTH | mDIVISOR_LATCH_ACCES_BIT; // długosc słowa, DLAB = 1
-   U0DLL   = (((15000000)/16)/uiBaudRate);                      // predkosc transmisji
-   U0LCR  &= (~mDIVISOR_LATCH_ACCES_BIT);                       // DLAB = 0
-   U0IER  |= mRX_DATA_AVALIABLE_INTERRUPT_ENABLE | mTHRE_INTERRUPT_ENABLE;               // Wlaczamy przerwanie po odebraniu znaku i wpisaniu go do bufora U0RBR
+	// INT
+	VICVectAddr1  = (unsigned long) UART0_Interrupt;             // set interrupt service routine address
+	VICVectCntl1  = mIRQ_SLOT_ENABLE | VIC_UART0_CHANNEL_NR;     // use it for UART 0 Interrupt
+	VICIntEnable |= (0x1 << VIC_UART0_CHANNEL_NR);               // Enable UART 0 Interrupt Channel
 
-   // INT
-   VICVectAddr2  = (unsigned long) UART0_Interrupt;             // set interrupt service routine address
-   VICVectCntl2  = mIRQ_SLOT_ENABLE | VIC_UART0_CHANNEL_NR;     // use it for UART 0 Interrupt
-   VICIntEnable |= (0x1 << VIC_UART0_CHANNEL_NR);               // Enable UART 0 Interrupt Channel
 }
 
