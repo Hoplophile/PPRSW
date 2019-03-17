@@ -1,13 +1,13 @@
 #include "string.h"
 
-void CopyString(char pcSource[], char pcDestination[]){
-	
-	unsigned char ucCharacterCounter;
-	
-	for (ucCharacterCounter=0;(pcSource[ucCharacterCounter]!=NULL);ucCharacterCounter++){
-		pcDestination[ucCharacterCounter]=pcSource[ucCharacterCounter];
+void CopyString (char pcSource[], char pcDestination[]){
+
+	unsigned char ucCharCounter;
+
+	for (ucCharCounter=0; pcSource[ucCharCounter]!=NULL; ucCharCounter++) {
+		pcDestination[ucCharCounter]=pcSource[ucCharCounter];
 	}
-	pcDestination[ucCharacterCounter]=pcSource[ucCharacterCounter];
+	pcDestination[ucCharCounter]=NULL;
 }
 
 enum CompResult eCompareString(char pcStr1[], char pcStr2[]){
@@ -25,12 +25,14 @@ enum CompResult eCompareString(char pcStr1[], char pcStr2[]){
 	return EQUAL;
 }	
 
-void AppendString (char pcSourceStr[], char pcDestinationStr[]){
-	
-	unsigned char ucCharacterCounter;
-	
-	for (ucCharacterCounter=0;pcDestinationStr[ucCharacterCounter]!=NULL;ucCharacterCounter++){}
-	CopyString(pcSourceStr,pcDestinationStr+ucCharacterCounter);
+void AppendString (char pcSourceStr[], char pcDestinationStr[]) {
+
+	unsigned char ucCharCounter;
+
+	for (ucCharCounter=0; pcDestinationStr[ucCharCounter]!=NULL; ucCharCounter++) {}
+
+	CopyString(pcSourceStr,pcDestinationStr+ucCharCounter);
+
 }
 
 void ReplaceCharactersInString(char pcString[], char cOldChar,char cNewChar){

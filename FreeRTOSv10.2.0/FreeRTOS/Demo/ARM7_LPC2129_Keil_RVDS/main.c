@@ -7,9 +7,9 @@
 #include "keyboard.h"
 
 unsigned int uiStartTick, uiExeTime;
-char cMessage[255];
+char cMessage[] = "-ABCDEEFGH-:", cTimeCount[8];
 
-void Rtos_Transmiter_SendString (char cMessage[255], void *pSemaphore){
+void Rtos_Transmiter_SendString (char cMessage[], void *pSemaphore){
 	
 	if(xSemaphoreTake(*((xSemaphoreHandle*)pSemaphore), portMAX_DELAY) == pdTRUE) {
 			Transmiter_SendString(cMessage);
@@ -20,15 +20,13 @@ void Rtos_Transmiter_SendString (char cMessage[255], void *pSemaphore){
 
 void LettersTx (void *pSemaphore ){	
 	
-	while(1){
-		
-		uiStartTick = xTaskGetTickCount();
-		Rtos_Transmiter_SendString("-ABCDEEFGH-:", pSemaphore);
-		uiExeTime = xTaskGetTickCount() - uiStartTick;
+	while(1){		
 		UIntToHexStr(uiExeTime, cTimeCount);
-		
 		AppendString("\n", cTimeCount);
-		Rtos_Transmiter_SendString(cTimeCount, pSemaphore);
+		AppendString(cTimeCount, cMessage);
+		uiStartTick = xTaskGetTickCount();
+		Rtos_Transmiter_SendString(cMessage, pSemaphore);
+		uiExeTime = xTaskGetTickCount() - uiStartTick;
 		vTaskDelay(300);
 	}
 }
