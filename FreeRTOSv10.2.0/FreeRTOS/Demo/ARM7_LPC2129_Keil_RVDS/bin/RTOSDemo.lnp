@@ -5,6 +5,8 @@
 ".\bin\string.o"
 ".\bin\uart.o"
 ".\bin\keyboard.o"
+".\bin\serwo.o"
+".\bin\timer_interrupts.o"
 ".\bin\tasks.o"
 ".\bin\list.o"
 ".\bin\queue.o"
