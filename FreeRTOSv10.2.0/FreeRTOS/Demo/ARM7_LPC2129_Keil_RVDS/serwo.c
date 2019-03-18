@@ -81,7 +81,7 @@ void Automat(void *pvParameters){
 					}
 					break;		
 			}
-			vTaskDelay(ucFrequency);
+			vTaskDelay(1);
 		}
 	}
 void Servo_Init(unsigned int uiServoFrequency){
