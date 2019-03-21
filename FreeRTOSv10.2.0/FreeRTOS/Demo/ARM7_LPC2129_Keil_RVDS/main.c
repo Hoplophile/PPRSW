@@ -5,51 +5,62 @@
 #include "string.h"
 #include "uart.h"
 #include "keyboard.h"
+#include "queue.h"
 
-void Rtos_Transmiter_SendString (char cMessage[], void *pSemaphore){
+void Rtos_Transmiter_SendString ( void *pvParameters ){
 	
+		QueueHandle_t *xMessagesQueue = (QueueHandle_t*)pvParameters;
+		char cMessageBuffer[100];
 	
-	
-	if(xSemaphoreTake(*((xSemaphoreHandle*)pSemaphore), portMAX_DELAY) == pdTRUE) {
-			Transmiter_SendString(cMessage);
+		while(1){
+			xQueueReceive(*xMessagesQueue, cMessageBuffer, portMAX_DELAY);
+			Transmiter_SendString(cMessageBuffer);
 			while (Transmiter_GetStatus()!=FREE){};
-			xSemaphoreGive(*((xSemaphoreHandle*)pSemaphore));
-	}
+		}
 }
 
-void LettersTx (void *pSemaphore ){	
+void LettersTx ( void *pvParameters ){	
 	
+	QueueHandle_t *xMessagesQueue = (QueueHandle_t*)pvParameters;
 	unsigned int uiStartTick = 0, uiExeTime = 0;
-	char cMessage[100];
+	char cLettersMessage[100];
 	
 	while(1){		
-		CopyString("-ABCDEEFGH-:", cMessage);
-		AppendUIntToString(uiExeTime, cMessage);
-		AppendString("\n\r", cMessage);
+		CopyString("-ABCDEEFGH-:", cLettersMessage);
+		AppendUIntToString(uiExeTime, cLettersMessage);
+		AppendString("\n", cLettersMessage);
 		uiStartTick = xTaskGetTickCount();
-		Rtos_Transmiter_SendString(cMessage, pSemaphore);
+		
+		xQueueSend(*xMessagesQueue, cLettersMessage, portMAX_DELAY);
 		uiExeTime = xTaskGetTickCount() - uiStartTick;
 		vTaskDelay(300);
 	}
 }
 
-void KeyboardTx (void *pSemaphore ){
+void KeyboardTx ( void *pvParameters ){
+	
+	QueueHandle_t *xMessagesQueue = (QueueHandle_t*)pvParameters;
+	char cKeyboardMessage[100];
+	CopyString("-Keyboard-\n", cKeyboardMessage);
 	
 	while(1){
-		if(eKeyboard_Read() != RELASED) Rtos_Transmiter_SendString("-Keyboard-\n", pSemaphore);
-		vTaskDelay(100);
+		if(eKeyboard_Read() != RELASED) {
+			xQueueSend(*xMessagesQueue, cKeyboardMessage, portMAX_DELAY);
+			vTaskDelay(100);
+		}
 	}
 }
 
 int main( void ){
 	
-	xSemaphoreHandle xSemaphore;
+	QueueHandle_t xMessagesQueue;
 	
 	ButtonInit();
 	UART_InitWithInt(300);
-	vSemaphoreCreateBinary(xSemaphore);
-	xTaskCreate(LettersTx, NULL, 128, &xSemaphore, 1, NULL );
-	xTaskCreate(KeyboardTx, NULL, 128, &xSemaphore, 1, NULL );
+	xMessagesQueue	= xQueueCreate(5, sizeof(char[100]));
+	xTaskCreate(LettersTx, NULL, 128, &xMessagesQueue, 1, NULL );
+	xTaskCreate(KeyboardTx, NULL, 128, &xMessagesQueue, 1, NULL );
+	xTaskCreate(Rtos_Transmiter_SendString, NULL, 128, &xMessagesQueue, 1, NULL );
 	vTaskStartScheduler();
 	
 	while(1) {};
