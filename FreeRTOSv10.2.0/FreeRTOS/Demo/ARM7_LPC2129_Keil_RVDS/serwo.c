@@ -3,19 +3,21 @@
 #include "led.h"
 #include "FreeRTOS.h"
 #include "task.h"
+#include "queue.h"
 
 #define mDETEKTORPIN 1<<10
 #define DESIREDOFFSET 50
 enum ServoState {CALLIB, IDDLE, IN_PROGRESS, OFFSET};
 unsigned char ucFreqParameter, ucFrequency;
+unsigned int uiBufferPosition;
+QueueHandle_t xPositionsQueue;
 
 struct Servo{
 	enum ServoState eState;
-	unsigned int uiCurrentPosition;
-	unsigned int uiDesiredPosition;
+	unsigned int uiPosition;
 };
 
-struct Servo eServo;
+struct Servo eServo, eServoTemp;
 
 void DetectorInit(){
 	IO0DIR = IO0DIR & (~(mDETEKTORPIN));
@@ -30,14 +32,18 @@ enum eStan eReadDetector(){
 	}
 }
 void Automat(void *pvParameters){
+	
+	xPositionsQueue = xQueueCreate(20, 2*sizeof(int));
+	
 	while(1){
 		
 		ucFrequency = *((unsigned char*)pvParameters);
+		xQueuePeek(xPositionsQueue, &uiBufferPosition, portMAX_DELAY);
 		
 		switch(eServo.eState){
 				case CALLIB:
 					if(eReadDetector()==ACTIVE){
-						eServo.uiCurrentPosition = 0;
+						eServo.uiPosition = 0;
 						eServo.eState=OFFSET;
 					}
 					else{
@@ -46,34 +52,34 @@ void Automat(void *pvParameters){
 					}
 					break;
 				case OFFSET:
-					if(eServo.uiCurrentPosition > DESIREDOFFSET ){
-						eServo.uiDesiredPosition = 0;
-						eServo.uiCurrentPosition = 0;
+					if(eServo.uiPosition > DESIREDOFFSET ){
+						eServo.uiPosition = 0;
 						eServo.eState = IDDLE;
 					}
 					else{
 						Led_StepRight();
-						eServo.uiCurrentPosition++;
+						eServo.uiPosition++;
 						eServo.eState = OFFSET;
 					}
 					break;
 				case IN_PROGRESS:
-					if(eServo.uiCurrentPosition == eServo.uiDesiredPosition){
+					if(eServo.uiPosition == uiBufferPosition){
+						xQueueReceive(xPositionsQueue, NULL, portMAX_DELAY);
 						eServo.eState=IDDLE;
 					}
-					else if(eServo.uiCurrentPosition < eServo.uiDesiredPosition){
+					else if(eServo.uiPosition < uiBufferPosition){
 						Led_StepRight();
-						eServo.uiCurrentPosition++;
+						eServo.uiPosition++;
 						eServo.eState=IN_PROGRESS;
 					}
 					else {
 						Led_StepLeft();
-						eServo.uiCurrentPosition--;
+						eServo.uiPosition--;
 						eServo.eState=IN_PROGRESS;
 					}
 					break;
 				case IDDLE:
-					if(eServo.uiCurrentPosition!=eServo.uiDesiredPosition){
+					if(eServo.uiPosition!=uiBufferPosition){
 						eServo.eState=IN_PROGRESS;
 					} 
 					else{
@@ -95,7 +101,8 @@ void Servo_Callib(void){
 	eServo.eState=CALLIB;
 }
 void Servo_GoTo(unsigned int uiPosition){
-	eServo.eState=IN_PROGRESS;
-	eServo.uiDesiredPosition=uiPosition;
+	eServoTemp.eState=IN_PROGRESS;
+	eServoTemp.uiPosition = uiPosition;
+	xQueueSend(xPositionsQueue, &eServoTemp, portMAX_DELAY);
 	while(eServo.eState==IN_PROGRESS){}
 }

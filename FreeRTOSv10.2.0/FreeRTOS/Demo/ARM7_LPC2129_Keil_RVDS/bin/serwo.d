@@ -13,3 +13,4 @@
 .\bin\serwo.o: ..\..\Source\include\mpu_wrappers.h
 .\bin\serwo.o: ..\..\Source\include\task.h
 .\bin\serwo.o: ..\..\Source\include\list.h
+.\bin\serwo.o: ..\..\Source\include\queue.h
