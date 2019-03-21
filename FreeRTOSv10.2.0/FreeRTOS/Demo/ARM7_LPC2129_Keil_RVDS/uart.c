@@ -37,7 +37,6 @@ struct TransmiterBuffer{
 };
 struct TransmiterBuffer sTransmiterBuffer;
 
-
 char cOdebranyZnak;
 
 struct RecieverBuffer{

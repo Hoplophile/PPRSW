@@ -450,26 +450,6 @@
               <FileType>5</FileType>
               <FilePath>.\keyboard.h</FilePath>
             </File>
-            <File>
-              <FileName>serwo.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\serwo.c</FilePath>
-            </File>
-            <File>
-              <FileName>serwo.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\serwo.h</FilePath>
-            </File>
-            <File>
-              <FileName>timer_interrupts.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\timer_interrupts.h</FilePath>
-            </File>
-            <File>
-              <FileName>timer_interrupts.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\timer_interrupts.c</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
@@ -952,26 +932,6 @@
               <FileName>keyboard.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\keyboard.h</FilePath>
-            </File>
-            <File>
-              <FileName>serwo.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\serwo.c</FilePath>
-            </File>
-            <File>
-              <FileName>serwo.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\serwo.h</FilePath>
-            </File>
-            <File>
-              <FileName>timer_interrupts.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\timer_interrupts.h</FilePath>
-            </File>
-            <File>
-              <FileName>timer_interrupts.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\timer_interrupts.c</FilePath>
             </File>
           </Files>
         </Group>
