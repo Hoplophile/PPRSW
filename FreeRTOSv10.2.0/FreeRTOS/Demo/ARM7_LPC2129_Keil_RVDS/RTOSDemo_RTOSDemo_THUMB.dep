@@ -1,12 +1,12 @@
 Dependencies for Project 'RTOSDemo', Target 'RTOSDemo_THUMB': (DO NOT MODIFY !)
 F (.\Startup.s)(0x5C9230FD)(--cpu ARM7TDMI --pd "__EVAL SETA 1" -g --apcs=interwork -I..\..\Source\portable\RVDS\ARM7_LPC21xx-I "C:\Program Files\Keil\ARM\RV31\INC"-I "C:\Program Files\Keil\ARM\CMSIS\Include"-I "C:\Program Files\Keil\ARM\Inc\Philips"--list .\startup.lst --xref -o .\bin\startup.o --depend .\bin\startup.d)
-F (.\main.c)(0x5C9406D9)(--thumb -c --cpu ARM7TDMI -D__EVAL -g -O0 --apcs=interwork -I. -I..\..\Source\portable\RVDS\ARM7_LPC21xx -I..\Common\include -I..\..\Source\include-I "C:\Program Files\Keil\ARM\RV31\INC"-I "C:\Program Files\Keil\ARM\CMSIS\Include"-I "C:\Program Files\Keil\ARM\Inc\Philips"-DARM7_LPC21xx_KEIL_RVDS -DKEIL_THUMB_INTERWORK-o .\bin\main.o --omf_browse .\bin\main.crf --depend .\bin\main.d)
+F (.\main.c)(0x5C97B482)(--thumb -c --cpu ARM7TDMI -D__EVAL -g -O0 --apcs=interwork -I. -I..\..\Source\portable\RVDS\ARM7_LPC21xx -I..\Common\include -I..\..\Source\include-I "C:\Program Files\Keil\ARM\RV31\INC"-I "C:\Program Files\Keil\ARM\CMSIS\Include"-I "C:\Program Files\Keil\ARM\Inc\Philips"-DARM7_LPC21xx_KEIL_RVDS -DKEIL_THUMB_INTERWORK-o .\bin\main.o --omf_browse .\bin\main.crf --depend .\bin\main.d)
 I (..\..\Source\include\FreeRTOS.h)(0x5C9230FE)
 I (C:\Program Files\Keil\ARM\ARMCC\include\stddef.h)(0x51C819B4)
 I (C:\Program Files\Keil\ARM\ARMCC\include\stdint.h)(0x51C819B4)
 I (.\FreeRTOSConfig.h)(0x5C9231A9)
 I (C:\Program Files\Keil\ARM\Inc\Philips\lpc21xx.h)(0x532C5448)
-I (..\..\Source\include\projdefs.h)(0x5C9230FE)
+I (..\..\Source\include\projdefs.h)(0x5C94087E)
 I (..\..\Source\include\portable.h)(0x5C9230FE)
 I (..\..\Source\include\deprecated_definitions.h)(0x5C9230FE)
 I (..\..\Source\include\..\..\Source\portable\RVDS\ARM7_LPC21xx\portmacro.h)(0x5C9230FE)
@@ -42,7 +42,7 @@ I (C:\Program Files\Keil\ARM\ARMCC\include\stddef.h)(0x51C819B4)
 I (C:\Program Files\Keil\ARM\ARMCC\include\stdint.h)(0x51C819B4)
 I (.\FreeRTOSConfig.h)(0x5C9231A9)
 I (C:\Program Files\Keil\ARM\Inc\Philips\lpc21xx.h)(0x532C5448)
-I (..\..\Source\include\projdefs.h)(0x5C9230FE)
+I (..\..\Source\include\projdefs.h)(0x5C94087E)
 I (..\..\Source\include\portable.h)(0x5C9230FE)
 I (..\..\Source\include\deprecated_definitions.h)(0x5C9230FE)
 I (..\..\Source\include\..\..\Source\portable\RVDS\ARM7_LPC21xx\portmacro.h)(0x5C9230FE)
@@ -58,7 +58,7 @@ I (C:\Program Files\Keil\ARM\ARMCC\include\stddef.h)(0x51C819B4)
 I (C:\Program Files\Keil\ARM\ARMCC\include\stdint.h)(0x51C819B4)
 I (.\FreeRTOSConfig.h)(0x5C9231A9)
 I (C:\Program Files\Keil\ARM\Inc\Philips\lpc21xx.h)(0x532C5448)
-I (..\..\Source\include\projdefs.h)(0x5C9230FE)
+I (..\..\Source\include\projdefs.h)(0x5C94087E)
 I (..\..\Source\include\portable.h)(0x5C9230FE)
 I (..\..\Source\include\deprecated_definitions.h)(0x5C9230FE)
 I (..\..\Source\include\..\..\Source\portable\RVDS\ARM7_LPC21xx\portmacro.h)(0x5C9230FE)
@@ -72,7 +72,7 @@ I (C:\Program Files\Keil\ARM\ARMCC\include\stddef.h)(0x51C819B4)
 I (C:\Program Files\Keil\ARM\ARMCC\include\stdint.h)(0x51C819B4)
 I (.\FreeRTOSConfig.h)(0x5C9231A9)
 I (C:\Program Files\Keil\ARM\Inc\Philips\lpc21xx.h)(0x532C5448)
-I (..\..\Source\include\projdefs.h)(0x5C9230FE)
+I (..\..\Source\include\projdefs.h)(0x5C94087E)
 I (..\..\Source\include\portable.h)(0x5C9230FE)
 I (..\..\Source\include\deprecated_definitions.h)(0x5C9230FE)
 I (..\..\Source\include\..\..\Source\portable\RVDS\ARM7_LPC21xx\portmacro.h)(0x5C9230FE)
@@ -87,7 +87,7 @@ I (C:\Program Files\Keil\ARM\ARMCC\include\stddef.h)(0x51C819B4)
 I (C:\Program Files\Keil\ARM\ARMCC\include\stdint.h)(0x51C819B4)
 I (.\FreeRTOSConfig.h)(0x5C9231A9)
 I (C:\Program Files\Keil\ARM\Inc\Philips\lpc21xx.h)(0x532C5448)
-I (..\..\Source\include\projdefs.h)(0x5C9230FE)
+I (..\..\Source\include\projdefs.h)(0x5C94087E)
 I (..\..\Source\include\portable.h)(0x5C9230FE)
 I (..\..\Source\include\deprecated_definitions.h)(0x5C9230FE)
 I (..\..\Source\include\..\..\Source\portable\RVDS\ARM7_LPC21xx\portmacro.h)(0x5C9230FE)
@@ -101,7 +101,7 @@ I (C:\Program Files\Keil\ARM\ARMCC\include\stddef.h)(0x51C819B4)
 I (C:\Program Files\Keil\ARM\ARMCC\include\stdint.h)(0x51C819B4)
 I (.\FreeRTOSConfig.h)(0x5C9231A9)
 I (C:\Program Files\Keil\ARM\Inc\Philips\lpc21xx.h)(0x532C5448)
-I (..\..\Source\include\projdefs.h)(0x5C9230FE)
+I (..\..\Source\include\projdefs.h)(0x5C94087E)
 I (..\..\Source\include\portable.h)(0x5C9230FE)
 I (..\..\Source\include\deprecated_definitions.h)(0x5C9230FE)
 I (..\..\Source\include\..\..\Source\portable\RVDS\ARM7_LPC21xx\portmacro.h)(0x5C9230FE)

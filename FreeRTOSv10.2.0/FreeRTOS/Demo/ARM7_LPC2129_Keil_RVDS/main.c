@@ -10,7 +10,7 @@
 void Rtos_Transmiter_SendString ( void *pvParameters ){
 	
 		QueueHandle_t *xMessagesQueue = (QueueHandle_t*)pvParameters;
-		char cMessageBuffer[100];
+		char cMessageBuffer[30];
 	
 		while(1){
 			xQueueReceive(*xMessagesQueue, cMessageBuffer, portMAX_DELAY);
@@ -23,16 +23,20 @@ void LettersTx ( void *pvParameters ){
 	
 	QueueHandle_t *xMessagesQueue = (QueueHandle_t*)pvParameters;
 	unsigned int uiStartTick = 0, uiExeTime = 0;
-	char cLettersMessage[100];
+	char cLettersMessage[30];
+	BaseType_t pdResult = errQUEUE_FULL;
 	
 	while(1){		
 		CopyString("-ABCDEEFGH-:", cLettersMessage);
 		AppendUIntToString(uiExeTime, cLettersMessage);
 		AppendString("\n", cLettersMessage);
-		uiStartTick = xTaskGetTickCount();
 		
-		xQueueSend(*xMessagesQueue, cLettersMessage, portMAX_DELAY);
+		uiStartTick = xTaskGetTickCount();		
+		pdResult = xQueueSend(*xMessagesQueue, cLettersMessage, 0);
 		uiExeTime = xTaskGetTickCount() - uiStartTick;
+		if(pdResult == errQUEUE_FULL) {
+			Led_Toggle(1);
+		}
 		vTaskDelay(300);
 	}
 }
@@ -40,13 +44,13 @@ void LettersTx ( void *pvParameters ){
 void KeyboardTx ( void *pvParameters ){
 	
 	QueueHandle_t *xMessagesQueue = (QueueHandle_t*)pvParameters;
-	char cKeyboardMessage[100];
+	char cKeyboardMessage[30];
 	CopyString("-Keyboard-\n", cKeyboardMessage);
 	
 	while(1){
 		if(eKeyboard_Read() != RELASED) {
-			xQueueSend(*xMessagesQueue, cKeyboardMessage, portMAX_DELAY);
-			vTaskDelay(100);
+		xQueueSend(*xMessagesQueue, cKeyboardMessage, portMAX_DELAY);
+		vTaskDelay(100);
 		}
 	}
 }
@@ -55,9 +59,11 @@ int main( void ){
 	
 	QueueHandle_t xMessagesQueue;
 	
+	Led_Init();
 	ButtonInit();
 	UART_InitWithInt(300);
-	xMessagesQueue	= xQueueCreate(5, sizeof(char[100]));
+	
+	xMessagesQueue	= xQueueCreate(5, sizeof(char[30]));
 	xTaskCreate(LettersTx, NULL, 128, &xMessagesQueue, 1, NULL );
 	xTaskCreate(KeyboardTx, NULL, 128, &xMessagesQueue, 1, NULL );
 	xTaskCreate(Rtos_Transmiter_SendString, NULL, 128, &xMessagesQueue, 1, NULL );
