@@ -1,73 +1,46 @@
 #include "FreeRTOS.h"
 #include "task.h"
-#include "led.h"
-#include "semphr.h"
-#include "string.h"
-#include "uart.h"
 #include "keyboard.h"
-#include "queue.h"
+#include "serwo.h"
 
-void Rtos_Transmiter_SendString ( void *pvParameters ){
-	
-		QueueHandle_t *xMessagesQueue = (QueueHandle_t*)pvParameters;
-		char cMessageBuffer[30];
-	
-		while(1){
-			xQueueReceive(*xMessagesQueue, cMessageBuffer, portMAX_DELAY);
-			Transmiter_SendString(cMessageBuffer);
-			while (Transmiter_GetStatus()!=FREE){};
-		}
-}
+enum KeyboardState ePreviousState = RELASED, eCurrentState = RELASED;
 
-void LettersTx ( void *pvParameters ){	
+void Keyboard (void *pvParameters){
 	
-	QueueHandle_t *xMessagesQueue = (QueueHandle_t*)pvParameters;
-	unsigned int uiStartTick = 0, uiExeTime = 0;
-	char cLettersMessage[30];
-	BaseType_t pdResult = errQUEUE_FULL;
-	
-	while(1){		
-		CopyString("-ABCDEEFGH-:", cLettersMessage);
-		AppendUIntToString(uiExeTime, cLettersMessage);
-		AppendString("\n", cLettersMessage);
+	while(1){			
+		ePreviousState = eCurrentState;
+		eCurrentState = eKeyboard_Read();
 		
-		uiStartTick = xTaskGetTickCount();		
-		pdResult = xQueueSend(*xMessagesQueue, cLettersMessage, 0);
-		uiExeTime = xTaskGetTickCount() - uiStartTick;
-		if(pdResult == errQUEUE_FULL) {
-			Led_Toggle(1);
+		if (ePreviousState != eCurrentState){
+			switch(eCurrentState){
+				case BUTTON_1: 
+					Servo_Callib();
+					break;
+				case BUTTON_2: 
+					Servo_GoTo(50);
+					break;
+				case BUTTON_3: 
+					Servo_GoTo(100);
+					break;
+				case BUTTON_4: 
+					Servo_GoTo(150);
+					break;
+				default:
+					break;
+			}		
 		}
-		vTaskDelay(300);
-	}
-}
-
-void KeyboardTx ( void *pvParameters ){
-	
-	QueueHandle_t *xMessagesQueue = (QueueHandle_t*)pvParameters;
-	char cKeyboardMessage[30];
-	CopyString("-Keyboard-\n", cKeyboardMessage);
-	
-	while(1){
-		if(eKeyboard_Read() != RELASED) {
-		xQueueSend(*xMessagesQueue, cKeyboardMessage, portMAX_DELAY);
-		vTaskDelay(100);
-		}
+		vTaskDelay(1);
 	}
 }
 
 int main( void ){
 	
-	QueueHandle_t xMessagesQueue;
-	
-	Led_Init();
+	TickType_t uiServoPeriod = 10;
 	ButtonInit();
-	UART_InitWithInt(300);
+	Servo_Init();
 	
-	xMessagesQueue	= xQueueCreate(5, sizeof(char[30]));
-	xTaskCreate(LettersTx, NULL, 128, &xMessagesQueue, 1, NULL );
-	xTaskCreate(KeyboardTx, NULL, 128, &xMessagesQueue, 1, NULL );
-	xTaskCreate(Rtos_Transmiter_SendString, NULL, 128, &xMessagesQueue, 1, NULL );
+	xTaskCreate(Automat, NULL, 127, &uiServoPeriod, 1, NULL);
+	xTaskCreate(Keyboard, NULL, 127, NULL, 2, NULL);
 	vTaskStartScheduler();
-	
-	while(1) {};
+	while(1){};
 }
