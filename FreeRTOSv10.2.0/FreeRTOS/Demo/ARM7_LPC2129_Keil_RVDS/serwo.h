@@ -5,4 +5,5 @@ enum eStan eReadDetector(void);
 void Servo_Init(void);
 void Servo_GoTo(unsigned int uiPosition);
 void Servo_Callib(void);
+void Servo_Wait(unsigned int uiTicksWait);
 void Automat(void *);

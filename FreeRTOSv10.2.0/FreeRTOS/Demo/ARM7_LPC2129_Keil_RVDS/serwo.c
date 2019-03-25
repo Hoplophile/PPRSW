@@ -7,13 +7,14 @@
 
 #define mDETEKTORPIN 1<<10
 
-enum ServoState {CALLIB, IDDLE, IN_PROGRESS};
-QueueHandle_t xPositionsQueue;
+enum ServoState {CALLIB, IDDLE, IN_PROGRESS, WAIT};
+QueueHandle_t xServoQueue;
 
 struct Servo{
 	enum ServoState eState;
 	unsigned int uiPosition;
 	unsigned int uiDesiredPosition;
+	unsigned int uiTicksWait;
 };
 
 void DetectorInit(){
@@ -30,7 +31,7 @@ enum eStan eReadDetector(){
 }
 void Automat(void *pvTickPeriod){
 	
-	static struct Servo sServo = {CALLIB, 0, 0};
+	static struct Servo sServo = {CALLIB, 0, 0, 0};
 	
 	while(1){
 		
@@ -66,36 +67,46 @@ void Automat(void *pvTickPeriod){
 						sServo.eState=IN_PROGRESS;
 					} 
 					else {
-						struct Servo sServoBuffer = {IDDLE, 0, 0};
-						if (xQueueReceive(xPositionsQueue, &sServoBuffer, 0) == pdPASS) {
+						struct Servo sServoBuffer = {IDDLE, 0, 0, 0};
+						if (xQueueReceive(xServoQueue, &sServoBuffer, 0) == pdPASS) {
+							if(sServoBuffer.eState == WAIT){
+								vTaskDelay(sServoBuffer.uiTicksWait);
+							} else {
 							sServoBuffer.eState = sServoBuffer.eState;
 							sServo.uiDesiredPosition = sServoBuffer.uiDesiredPosition;
-						}
-						else {
+							}
+						} else {
 							sServo.eState=IDDLE;
 						}
 					}
-					break;		
+					break;
 			}
 			vTaskDelay(*((TickType_t*)pvTickPeriod));
 		}
 	}
 void Servo_Init(void){
 	
-	xPositionsQueue = xQueueCreate(20, sizeof(struct Servo));
+	xServoQueue = xQueueCreate(20, sizeof(struct Servo));
 	DetectorInit();
 	Led_Init();
 	Servo_Callib();
 }
 void Servo_Callib(void){
 	
-	struct Servo sServo = {CALLIB, 0, 0};
-	xQueueSend(xPositionsQueue, &sServo, 0);
+	struct Servo sServo = {CALLIB, 0, 0, 0};
+	xQueueSend(xServoQueue, &sServo, 0);
 }
 void Servo_GoTo(unsigned int uiPosition){
 	
 	struct Servo sServo;
 	sServo.eState=IN_PROGRESS;
 	sServo.uiDesiredPosition = uiPosition;
-	xQueueSend(xPositionsQueue, &sServo, 0);
+	xQueueSend(xServoQueue, &sServo, 0);
+}
+
+void Servo_Wait(unsigned int uiTicksWait){
+	
+	struct Servo sServo = {WAIT, 0, 0, 0};
+	sServo.uiTicksWait = uiTicksWait;
+	xQueueSend(xServoQueue, &sServo, 0);
 }
