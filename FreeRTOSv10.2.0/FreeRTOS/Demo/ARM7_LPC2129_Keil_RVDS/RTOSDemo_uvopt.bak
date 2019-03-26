@@ -356,7 +356,7 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>232</TopLine>
+      <TopLine>233</TopLine>
       <CurrentLine>240</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\Startup.s</PathWithFileName>
@@ -370,10 +370,10 @@
       <FileType>1</FileType>
       <tvExp>1</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>25</ColumnNumber>
+      <ColumnNumber>22</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>9</TopLine>
-      <CurrentLine>28</CurrentLine>
+      <TopLine>1</TopLine>
+      <CurrentLine>33</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\main.c</PathWithFileName>
       <FilenameWithoutPath>main.c</FilenameWithoutPath>
@@ -407,7 +407,7 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>28</TopLine>
+      <TopLine>29</TopLine>
       <CurrentLine>51</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\led.c</PathWithFileName>
@@ -517,10 +517,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>60</ColumnNumber>
+      <ColumnNumber>14</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>44</TopLine>
-      <CurrentLine>55</CurrentLine>
+      <TopLine>51</TopLine>
+      <CurrentLine>78</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\serwo.c</PathWithFileName>
       <FilenameWithoutPath>serwo.c</FilenameWithoutPath>
@@ -591,7 +591,7 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>3580</TopLine>
+      <TopLine>3581</TopLine>
       <CurrentLine>3588</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\Source\tasks.c</PathWithFileName>
@@ -671,7 +671,7 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>71</TopLine>
+      <TopLine>57</TopLine>
       <CurrentLine>87</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\Source\portable\RVDS\ARM7_LPC21xx\portASM.s</PathWithFileName>

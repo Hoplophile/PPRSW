@@ -23,14 +23,16 @@ void Keyboard (void *pvParameters){
 					Servo_GoTo(100);
 					break;
 				case BUTTON_4: 
+					Servo_Speed(8);
 					Servo_GoTo(12);
 					Servo_Wait(100);
-					Servo_GoTo(0);
+					Servo_Speed(4);
 					Servo_GoTo(24);
-					Servo_Wait(200);
-					Servo_GoTo(0);
+					Servo_Wait(100);
+					Servo_Speed(2);
 					Servo_GoTo(36);
-					Servo_Wait(300);
+					Servo_Wait(100);
+					Servo_Speed(1);
 					Servo_GoTo(0);
 					break;
 				default:
@@ -43,11 +45,10 @@ void Keyboard (void *pvParameters){
 
 int main( void ){
 	
-	TickType_t uiServoPeriod = 10;
 	ButtonInit();
 	Servo_Init();
 	
-	xTaskCreate(Automat, NULL, 127, &uiServoPeriod, 1, NULL);
+	xTaskCreate(Automat, NULL, 127, NULL, 1, NULL);
 	xTaskCreate(Keyboard, NULL, 127, NULL, 2, NULL);
 	vTaskStartScheduler();
 	while(1){};

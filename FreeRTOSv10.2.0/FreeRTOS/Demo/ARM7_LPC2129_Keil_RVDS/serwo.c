@@ -7,14 +7,15 @@
 
 #define mDETEKTORPIN 1<<10
 
-enum ServoState {CALLIB, IDDLE, IN_PROGRESS, WAIT};
+enum ServoState {CALLIB, IDDLE, IN_PROGRESS, WAIT, SPEED};
 QueueHandle_t xServoQueue;
 
 struct Servo{
 	enum ServoState eState;
 	unsigned int uiPosition;
 	unsigned int uiDesiredPosition;
-	unsigned int uiTicksWait;
+	TickType_t TicksWait;
+	unsigned char ucServoSpeed;
 };
 
 void DetectorInit(){
@@ -29,9 +30,9 @@ enum eStan eReadDetector(){
 		return INACTIVE;
 	}
 }
-void Automat(void *pvTickPeriod){
+void Automat(void *pvParameters){
 	
-	static struct Servo sServo = {CALLIB, 0, 0, 0};
+	static struct Servo sServo = {CALLIB, 0, 0, 0, 10};
 	
 	while(1){
 		
@@ -67,10 +68,13 @@ void Automat(void *pvTickPeriod){
 						sServo.eState=IN_PROGRESS;
 					} 
 					else {
-						struct Servo sServoBuffer = {IDDLE, 0, 0, 0};
+						struct Servo sServoBuffer = {IDDLE, 0, 0, 0, 0};
 						if (xQueueReceive(xServoQueue, &sServoBuffer, 0) == pdPASS) {
 							if(sServoBuffer.eState == WAIT){
-								vTaskDelay(sServoBuffer.uiTicksWait);
+								vTaskDelay(sServoBuffer.TicksWait);
+								sServo.eState = IDDLE;
+							} else if(sServoBuffer.eState == SPEED) {
+								sServo.ucServoSpeed = sServoBuffer.ucServoSpeed;
 							} else {
 							sServoBuffer.eState = sServoBuffer.eState;
 							sServo.uiDesiredPosition = sServoBuffer.uiDesiredPosition;
@@ -80,8 +84,11 @@ void Automat(void *pvTickPeriod){
 						}
 					}
 					break;
+				case WAIT:
+				case SPEED:
+					break;
 			}
-			vTaskDelay(*((TickType_t*)pvTickPeriod));
+			vTaskDelay((TickType_t)sServo.ucServoSpeed);
 		}
 	}
 void Servo_Init(void){
@@ -93,7 +100,7 @@ void Servo_Init(void){
 }
 void Servo_Callib(void){
 	
-	struct Servo sServo = {CALLIB, 0, 0, 0};
+	struct Servo sServo = {CALLIB, 0, 0, 0, 0};
 	xQueueSend(xServoQueue, &sServo, 0);
 }
 void Servo_GoTo(unsigned int uiPosition){
@@ -104,9 +111,16 @@ void Servo_GoTo(unsigned int uiPosition){
 	xQueueSend(xServoQueue, &sServo, 0);
 }
 
-void Servo_Wait(unsigned int uiTicksWait){
+void Servo_Wait(TickType_t TicksWait){
 	
-	struct Servo sServo = {WAIT, 0, 0, 0};
-	sServo.uiTicksWait = uiTicksWait;
+	struct Servo sServo = {WAIT, 0, 0, 0, 0};
+	sServo.TicksWait = TicksWait;
+	xQueueSend(xServoQueue, &sServo, 0);
+}
+
+void Servo_Speed(unsigned char ucServoSpeed){
+	
+	struct Servo sServo = {SPEED, 0, 0, 0, 0};
+	sServo.ucServoSpeed = ucServoSpeed;
 	xQueueSend(xServoQueue, &sServo, 0);
 }
