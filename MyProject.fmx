@@ -5,10 +5,10 @@
     <Version>1</Version>
   </Project>
   <StartPageForm>
-    <GUID>14c0ef75-3649-45d7-a898-adc54cfecc5e</GUID>
+    <GUID>b8c3c37e-7e53-4cf0-a83a-bb881cd0cf3c</GUID>
   </StartPageForm>
   <ProgramDocument>
-    <GUID>74c39989-8a8f-4352-9efa-bee4adec3c41</GUID>
+    <GUID>5842563e-b850-4750-b6c5-8d5ca8284f4a</GUID>
     <UsesCustomTitle>false</UsesCustomTitle>
     <Title>RTOSDemo - LPC2132 (LPC2000)</Title>
     <VerifyFile Path="yes">
@@ -26,7 +26,7 @@
         <ISPType>UART</ISPType>
         <UARTSettings>
           <COMPort />
-          <Baudrate>9600</Baudrate>
+          <Baudrate>14400</Baudrate>
         </UARTSettings>
       </DeviceSettings>
       <EraseSettings>
@@ -77,22 +77,22 @@
     <State>Normal</State>
     <Layout>&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;Layout&gt;
-  &lt;Window Guid="74c39989-8a8f-4352-9efa-bee4adec3c41" LastFocused="131974041460398767" DockedSize="200" PopupSize="0" FloatingLocation="-1, -1" FloatingSize="550, 400" LastOpenDockSituation="Document" LastFixedDockSituation="Document" LastFixedDockLocation="Right" LastFloatingWindowGuid="00000000-0000-0000-0000-000000000000" LastDockContainerCount="0" LastDockContainerIndex="0" DockedWorkingSize="250, 400" DockedWindowGroupGuid="00000000-0000-0000-0000-000000000000" DockedIndexInWindowGroup="0" DockedSplitPath="0" DocumentWorkingSize="250, 400" DocumentWindowGroupGuid="5b84f830-20e3-4321-a5e7-b2a860ec3c3a" DocumentIndexInWindowGroup="0" DocumentSplitPath="0" FloatingWorkingSize="250, 400" FloatingWindowGroupGuid="00000000-0000-0000-0000-000000000000" FloatingIndexInWindowGroup="0" FloatingSplitPath="0" /&gt;
-  &lt;Window Guid="14c0ef75-3649-45d7-a898-adc54cfecc5e" LastFocused="131973161772808392" DockedSize="200" PopupSize="0" FloatingLocation="-1, -1" FloatingSize="250, 400" LastOpenDockSituation="Docked" LastFixedDockSituation="Docked" LastFixedDockLocation="Right" LastFloatingWindowGuid="00000000-0000-0000-0000-000000000000" LastDockContainerCount="1" LastDockContainerIndex="0" DockedWorkingSize="250, 400" DockedWindowGroupGuid="e3fc7f61-f0cd-45e5-be76-9903002647e7" DockedIndexInWindowGroup="0" DockedSplitPath="0" DocumentWorkingSize="250, 400" DocumentWindowGroupGuid="00000000-0000-0000-0000-000000000000" DocumentIndexInWindowGroup="0" DocumentSplitPath="0" FloatingWorkingSize="250, 400" FloatingWindowGroupGuid="00000000-0000-0000-0000-000000000000" FloatingIndexInWindowGroup="0" FloatingSplitPath="0" /&gt;
+  &lt;Window Guid="b8c3c37e-7e53-4cf0-a83a-bb881cd0cf3c" LastFocused="131980257056100498" DockedSize="200" PopupSize="0" FloatingLocation="-1, -1" FloatingSize="250, 400" LastOpenDockSituation="Docked" LastFixedDockSituation="Docked" LastFixedDockLocation="Right" LastFloatingWindowGuid="00000000-0000-0000-0000-000000000000" LastDockContainerCount="1" LastDockContainerIndex="0" DockedWorkingSize="250, 400" DockedWindowGroupGuid="b2c82c8a-6c0a-41c2-87cc-8d59e4cc0442" DockedIndexInWindowGroup="0" DockedSplitPath="0" DocumentWorkingSize="250, 400" DocumentWindowGroupGuid="00000000-0000-0000-0000-000000000000" DocumentIndexInWindowGroup="0" DocumentSplitPath="0" FloatingWorkingSize="250, 400" FloatingWindowGroupGuid="00000000-0000-0000-0000-000000000000" FloatingIndexInWindowGroup="0" FloatingSplitPath="0" /&gt;
+  &lt;Window Guid="5842563e-b850-4750-b6c5-8d5ca8284f4a" LastFocused="131981044088926458" DockedSize="200" PopupSize="0" FloatingLocation="-1, -1" FloatingSize="550, 400" LastOpenDockSituation="Document" LastFixedDockSituation="Document" LastFixedDockLocation="Right" LastFloatingWindowGuid="00000000-0000-0000-0000-000000000000" LastDockContainerCount="0" LastDockContainerIndex="0" DockedWorkingSize="250, 400" DockedWindowGroupGuid="00000000-0000-0000-0000-000000000000" DockedIndexInWindowGroup="0" DockedSplitPath="0" DocumentWorkingSize="250, 400" DocumentWindowGroupGuid="dd51c5ac-bc59-4b9f-a74d-2a585eac58d7" DocumentIndexInWindowGroup="0" DocumentSplitPath="0" FloatingWorkingSize="250, 400" FloatingWindowGroupGuid="00000000-0000-0000-0000-000000000000" FloatingIndexInWindowGroup="0" FloatingSplitPath="0" /&gt;
   &lt;Container Dock="4" ContentSize="200"&gt;
     &lt;SplitLayoutSystem WorkingSize="250, 400" SplitMode="0"&gt;
-      &lt;ControlLayoutSystem WorkingSize="250, 400" Guid="e3fc7f61-f0cd-45e5-be76-9903002647e7" Collapsed="0" SelectedControl="14c0ef75-3649-45d7-a898-adc54cfecc5e"&gt;
+      &lt;ControlLayoutSystem WorkingSize="250, 400" Guid="b2c82c8a-6c0a-41c2-87cc-8d59e4cc0442" Collapsed="0" SelectedControl="b8c3c37e-7e53-4cf0-a83a-bb881cd0cf3c"&gt;
         &lt;Controls&gt;
-          &lt;Control Guid="14c0ef75-3649-45d7-a898-adc54cfecc5e" /&gt;
+          &lt;Control Guid="b8c3c37e-7e53-4cf0-a83a-bb881cd0cf3c" /&gt;
         &lt;/Controls&gt;
       &lt;/ControlLayoutSystem&gt;
     &lt;/SplitLayoutSystem&gt;
   &lt;/Container&gt;
   &lt;DocumentContainer Dock="5"&gt;
     &lt;SplitLayoutSystem WorkingSize="250, 400" SplitMode="0"&gt;
-      &lt;ControlLayoutSystem WorkingSize="250, 400" Guid="5b84f830-20e3-4321-a5e7-b2a860ec3c3a" Collapsed="0" SelectedControl="74c39989-8a8f-4352-9efa-bee4adec3c41"&gt;
+      &lt;ControlLayoutSystem WorkingSize="250, 400" Guid="dd51c5ac-bc59-4b9f-a74d-2a585eac58d7" Collapsed="0" SelectedControl="5842563e-b850-4750-b6c5-8d5ca8284f4a"&gt;
         &lt;Controls&gt;
-          &lt;Control Guid="74c39989-8a8f-4352-9efa-bee4adec3c41" /&gt;
+          &lt;Control Guid="5842563e-b850-4750-b6c5-8d5ca8284f4a" /&gt;
         &lt;/Controls&gt;
       &lt;/ControlLayoutSystem&gt;
     &lt;/SplitLayoutSystem&gt;
