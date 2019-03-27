@@ -7,15 +7,21 @@
 
 #define mDETEKTORPIN 1<<10
 
-enum ServoState {CALLIB, IDDLE, IN_PROGRESS, WAIT, SPEED};
+enum ServoState {CALLIB, IDDLE, IN_PROGRESS};
+enum ServoCommand {CALLIB_COMMAND, GOTO_COMMAND, WAIT_COMMAND, SPEED_COMMAND};
 QueueHandle_t xServoQueue;
 
 struct Servo{
 	enum ServoState eState;
-	unsigned int uiPosition;
+	unsigned int uiCurrentPosition;
 	unsigned int uiDesiredPosition;
 	TickType_t TicksWait;
 	unsigned char ucServoSpeed;
+};
+
+struct ServoCom{
+	enum ServoCommand eCommand;
+	unsigned int uiArgument;
 };
 
 void DetectorInit(){
@@ -30,6 +36,7 @@ enum eStan eReadDetector(){
 		return INACTIVE;
 	}
 }
+
 void Automat(void *pvParameters){
 	
 	static struct Servo sServo = {CALLIB, 0, 0, 0, 10};
@@ -39,7 +46,7 @@ void Automat(void *pvParameters){
 		switch(sServo.eState){
 				case CALLIB:
 					if(eReadDetector()==ACTIVE){
-						sServo.uiPosition = 0;
+						sServo.uiCurrentPosition = 0;
 						sServo.uiDesiredPosition = 0;
 						sServo.eState=IDDLE;
 					}
@@ -49,14 +56,14 @@ void Automat(void *pvParameters){
 					}
 					break;
 				case IN_PROGRESS:
-					if(sServo.uiPosition > sServo.uiDesiredPosition){
+					if(sServo.uiCurrentPosition > sServo.uiDesiredPosition){
 						Led_StepLeft();
-						sServo.uiPosition--;
+						sServo.uiCurrentPosition--;
 						sServo.eState=IN_PROGRESS;
 					}
-					else if(sServo.uiPosition < sServo.uiDesiredPosition){
+					else if(sServo.uiCurrentPosition < sServo.uiDesiredPosition){
 						Led_StepRight();
-						sServo.uiPosition++;
+						sServo.uiCurrentPosition++;
 						sServo.eState=IN_PROGRESS;
 					}
 					else {
@@ -64,36 +71,37 @@ void Automat(void *pvParameters){
 					}
 					break;
 				case IDDLE:
-					if(sServo.uiPosition != sServo.uiDesiredPosition){
-						sServo.eState=IN_PROGRESS;
-					} 
-					else {
-						struct Servo sServoBuffer = {IDDLE, 0, 0, 0, 0};
-						if (xQueueReceive(xServoQueue, &sServoBuffer, 0) == pdPASS) {
-							if(sServoBuffer.eState == WAIT){
-								vTaskDelay(sServoBuffer.TicksWait);
+				{
+					struct ServoCom sServoBuffer = {GOTO_COMMAND, 0};
+					
+					if (xQueueReceive(xServoQueue, &sServoBuffer, portMAX_DELAY) == pdPASS) {
+						switch(sServoBuffer.eCommand){
+							case WAIT_COMMAND:
+								vTaskDelay((TickType_t)sServoBuffer.uiArgument);
 								sServo.eState = IDDLE;
-							} else if(sServoBuffer.eState == SPEED) {
-								sServo.ucServoSpeed = sServoBuffer.ucServoSpeed;
-							} else {
-							sServoBuffer.eState = sServoBuffer.eState;
-							sServo.uiDesiredPosition = sServoBuffer.uiDesiredPosition;
-							}
-						} else {
-							sServo.eState=IDDLE;
+								break;
+							case SPEED_COMMAND:
+								sServo.ucServoSpeed = sServoBuffer.uiArgument;
+								sServo.eState = IDDLE;
+								break;
+							case GOTO_COMMAND:
+								sServo.uiDesiredPosition = sServoBuffer.uiArgument;
+								sServo.eState = IN_PROGRESS;
+								break;
+							case CALLIB_COMMAND:
+								sServo.eState = CALLIB;
+								break;
 						}
 					}
 					break;
-				case WAIT:
-				case SPEED:
-					break;
+				}
 			}
 			vTaskDelay((TickType_t)sServo.ucServoSpeed);
 		}
 	}
 void Servo_Init(void){
 	
-	xServoQueue = xQueueCreate(20, sizeof(struct Servo));
+	xServoQueue = xQueueCreate(20, sizeof(struct ServoCom));
 	DetectorInit();
 	Led_Init();
 	Servo_Callib();
@@ -105,22 +113,24 @@ void Servo_Callib(void){
 }
 void Servo_GoTo(unsigned int uiPosition){
 	
-	struct Servo sServo;
-	sServo.eState=IN_PROGRESS;
-	sServo.uiDesiredPosition = uiPosition;
-	xQueueSend(xServoQueue, &sServo, 0);
+	struct ServoCom sServoCommand;
+	sServoCommand.eCommand=GOTO_COMMAND;
+	sServoCommand.uiArgument = uiPosition;
+	xQueueSend(xServoQueue, &sServoCommand, 0);
 }
 
 void Servo_Wait(TickType_t TicksWait){
 	
-	struct Servo sServo = {WAIT, 0, 0, 0, 0};
-	sServo.TicksWait = TicksWait;
-	xQueueSend(xServoQueue, &sServo, 0);
+	struct ServoCom sServoCommand;
+	sServoCommand.eCommand = WAIT_COMMAND;
+	sServoCommand.uiArgument = TicksWait;
+	xQueueSend(xServoQueue, &sServoCommand, 0);
 }
 
 void Servo_Speed(unsigned char ucServoSpeed){
 	
-	struct Servo sServo = {SPEED, 0, 0, 0, 0};
-	sServo.ucServoSpeed = ucServoSpeed;
-	xQueueSend(xServoQueue, &sServo, 0);
+	struct ServoCom sServoCommand;
+	sServoCommand.eCommand = SPEED_COMMAND;
+	sServoCommand.uiArgument = ucServoSpeed;
+	xQueueSend(xServoQueue, &sServoCommand, 0);
 }
