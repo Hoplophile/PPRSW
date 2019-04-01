@@ -1,5 +1,8 @@
 #include <LPC21xx.H>
 #include "timer_interrupts.h"
+#include "FreeRTOS.h"
+#include "semphr.h"
+
 // TIMER
 #define mCOUNTER_ENABLE 0x00000001
 #define mCOUNTER_RESET  0x00000002
@@ -18,19 +21,19 @@
 
 void (*ptrTimer0InterruptFunction)(void);
 void (*ptrTimer1InterruptFunction)(void);
+SemaphoreHandle_t LedSemaphore;
 
 /**********************************************/
 //(Interrupt Service Routine) of Timer 0 interrupt
 __irq void Timer1IRQHandler(){
 
+	BaseType_t xHigherPriorityTaskWoken = pdTRUE;
 	T1IR=mMR0_INTERRUPT; 	// skasowanie flagi przerwania 
-	ptrTimer1InterruptFunction();		// cos do roboty
+	xSemaphoreGiveFromISR(LedSemaphore, &xHigherPriorityTaskWoken);
 	VICVectAddr=0x00; 	// potwierdzenie wykonania procedury obslugi przerwania
 }
 /**********************************************/
-void Timer1Interrupts_Init(unsigned int uiPeriod, void (*ptrInterruptFunction)()){ // microseconds
-
-		ptrTimer1InterruptFunction = ptrInterruptFunction;
+void Timer1Interrupts_Init(unsigned int uiPeriod){ // microseconds
 	
 				// interrupts
 
@@ -46,6 +49,8 @@ void Timer1Interrupts_Init(unsigned int uiPeriod, void (*ptrInterruptFunction)()
         // timer
 
 	T1TCR |=  mCOUNTER_ENABLE; // start 
+	
+	LedSemaphore = xSemaphoreCreateBinary();	
 }
 /**********************************************/
 //(Interrupt Service Routine) of Timer 0 interrupt
