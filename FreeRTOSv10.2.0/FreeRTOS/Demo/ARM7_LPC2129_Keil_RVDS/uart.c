@@ -30,7 +30,7 @@
 
 
 struct TransmiterBuffer{
-	char cData[TRANSMITER_SIZE];
+	char cData[ UART_TX_BUFFER_SIZE ];
 	enum eTransmiterStatus eStatus;
 	unsigned char fLastCharacter;
 	unsigned char ucCharCtr;
@@ -41,7 +41,7 @@ struct TransmiterBuffer sTransmiterBuffer;
 char cOdebranyZnak;
 
 struct RecieverBuffer{
-	char cData[ RECIEVER_SIZE ];
+	char cData[ UART_RX_BUFFER_SIZE ];
 	unsigned char ucCharCtr;
 	enum eRecieverStatus eStatus;
 };
@@ -76,14 +76,14 @@ void Transmiter_SendString(char cString[]){
 	U0THR = Transmiter_GetCharacterFromBuffer();
 }
 
-enum eTransmiterStatus Transmiter_GetStatus(void){
+enum eTransmiterStatus eUartTx_GetStatus(void){
 
 	return(sTransmiterBuffer.eStatus);
 }
 
 void Reciever_PutCharacterToBuffer(char cCharacter){
 	
-	if(sRxBuffer.ucCharCtr >= RECIEVER_SIZE){
+	if(sRxBuffer.ucCharCtr >= UART_RX_BUFFER_SIZE){
 		sRxBuffer.eStatus = OVERFLOW;
 	}else if (cCharacter == TERMINATOR){
 		sRxBuffer.cData[sRxBuffer.ucCharCtr] = NULL;
@@ -95,12 +95,12 @@ void Reciever_PutCharacterToBuffer(char cCharacter){
 	}
 }
 
-enum eRecieverStatus eReciever_GetStatus(void){
+enum eRecieverStatus eUartRx_GetStatus(void){
 	
 	return(sRxBuffer.eStatus);
 }
 
-void Reciever_GetStringCopy(char * ucDestination){
+void Uart_GetStringCopy(char * ucDestination){
 	
 	CopyString(sRxBuffer.cData, ucDestination);
 	sRxBuffer.eStatus = EMPTY;

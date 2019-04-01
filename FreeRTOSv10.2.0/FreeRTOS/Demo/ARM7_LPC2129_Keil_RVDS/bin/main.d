@@ -12,6 +12,4 @@
 .\bin\main.o: ..\..\Source\include\task.h
 .\bin\main.o: ..\..\Source\include\list.h
 .\bin\main.o: led.h
-.\bin\main.o: timer_interrupts.h
-.\bin\main.o: ..\..\Source\include\semphr.h
-.\bin\main.o: ..\..\Source\include\queue.h
+.\bin\main.o: uart.h

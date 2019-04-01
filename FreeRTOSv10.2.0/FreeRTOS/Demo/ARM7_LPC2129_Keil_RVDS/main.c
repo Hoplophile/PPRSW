@@ -1,25 +1,26 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "led.h"
-#include "timer_interrupts.h"
-#include "semphr.h"
-	
-extern SemaphoreHandle_t LedSemaphore;
+#include "uart.h"
 
-void LedBlink(void *pvParameters)
-{
-	while(1){
-		xSemaphoreTake(LedSemaphore, portMAX_DELAY);
-		Led_Toggle(0);
-	}
+void UartRx( void *pvParameters ){
+
+		char acBuffer[UART_RX_BUFFER_SIZE];
+
+		while(1){
+			
+			while (eUartRx_GetStatus() == EMPTY){};
+				Uart_GetStringCopy(acBuffer);
+				Led_Toggle(0);
+		}
 }
 
-int main(void) {
+int main( void ){
+
+		Led_Init();
+		UART_InitWithInt(9600);
+		xTaskCreate( UartRx, NULL , 100 , NULL, 1 , NULL );
+		vTaskStartScheduler();
 	
-	Led_Init();
-	Timer1Interrupts_Init(50000);
-	xTaskCreate(&LedBlink, NULL, 127, NULL, 8, NULL);
-	vTaskStartScheduler();
-	
-	while(1) {};
+	while(1);
 }
