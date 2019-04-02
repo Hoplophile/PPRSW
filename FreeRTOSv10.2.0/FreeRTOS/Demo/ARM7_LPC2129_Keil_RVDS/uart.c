@@ -40,12 +40,21 @@ struct TransmiterBuffer{
 };
 struct TransmiterBuffer sTransmiterBuffer;
 
-char cUart_GetChar( void ) {
+void Uart_GetString( char* pcString ) {
 	
-	char cBuffer = 0;
+	char cCharBuffer = 0;
+	char cStringBuffer[UART_RX_BUFFER_SIZE];
+	unsigned char ucStringIndex = 0;
 	
-	xQueueReceive(UartQueue, &cBuffer, portMAX_DELAY);
-	return cBuffer;
+	xQueueReceive(UartQueue, &cCharBuffer, portMAX_DELAY);
+	
+	while((cCharBuffer != TERMINATOR) && (ucStringIndex < UART_RX_BUFFER_SIZE - 1)){
+		cStringBuffer[ucStringIndex] = cCharBuffer;
+		ucStringIndex++;
+	}
+	
+	cStringBuffer[ucStringIndex] = NULL;
+	CopyString(cStringBuffer, pcString);
 }
 
 char Transmiter_GetCharacterFromBuffer(void){

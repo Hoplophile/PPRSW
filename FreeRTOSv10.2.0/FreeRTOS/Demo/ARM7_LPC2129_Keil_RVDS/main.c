@@ -4,9 +4,12 @@
 #include "uart.h"
 
 void UartRx( void *pvParameters ){
+	
+	char acBuffer[UART_RX_BUFFER_SIZE] = "";
 
 		while(1){
-			Led_Toggle(cUart_GetChar() - '0');
+			Uart_GetString(acBuffer);
+			Led_Toggle(acBuffer[0]-'0');
 		}
 }
 

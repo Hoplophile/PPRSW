@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\bin\RTOSDemo.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\bin\RTOSDemo.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5.03 [Build 76]: Last Updated: Tue Apr 02 23:32:41 2019
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5.03 [Build 76]: Last Updated: Wed Apr 03 00:12:12 2019
 <BR><P>
 <H3>Maximum Stack Usage =        144 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -188,11 +188,11 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[18]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__user_setup_stackheap
 </UL>
 
-<P><STRONG><a name="[c]"></a>UartRx</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, main.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 92 + Unknown Stack Size
-<LI>Call Chain = UartRx &rArr; cUart_GetChar &rArr; xQueueReceive &rArr; vTaskPlaceOnEventList &rArr; prvAddCurrentTaskToDelayedList &rArr; vListInsert
+<P><STRONG><a name="[c]"></a>UartRx</STRONG> (Thumb, 36 bytes, Stack size 16 bytes, main.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 132 + Unknown Stack Size
+<LI>Call Chain = UartRx &rArr; Uart_GetString &rArr; xQueueReceive &rArr; vTaskPlaceOnEventList &rArr; prvAddCurrentTaskToDelayedList &rArr; vListInsert
 </UL>
-<BR>[Calls]<UL><LI><a href="#[21]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cUart_GetChar
+<BR>[Calls]<UL><LI><a href="#[21]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Uart_GetString
 <LI><a href="#[22]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Led_Toggle
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> main.o(.text)
@@ -235,9 +235,10 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UartRx
 </UL>
 
-<P><STRONG><a name="[2c]"></a>CopyString</STRONG> (Thumb, 26 bytes, Stack size 0 bytes, string.o(.text), UNUSED)
+<P><STRONG><a name="[2c]"></a>CopyString</STRONG> (Thumb, 26 bytes, Stack size 0 bytes, string.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[30]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Transmiter_SendString
 <LI><a href="#[2b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AppendString
+<LI><a href="#[21]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Uart_GetString
 </UL>
 
 <P><STRONG><a name="[a5]"></a>eCompareString</STRONG> (Thumb, 58 bytes, Stack size 4 bytes, string.o(.text), UNUSED)
@@ -258,11 +259,12 @@ Global Symbols
 <BR><BR>[Calls]<UL><LI><a href="#[2e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UIntToHexStr
 </UL>
 
-<P><STRONG><a name="[21]"></a>cUart_GetChar</STRONG> (Thumb, 28 bytes, Stack size 8 bytes, uart.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 92 + Unknown Stack Size
-<LI>Call Chain = cUart_GetChar &rArr; xQueueReceive &rArr; vTaskPlaceOnEventList &rArr; prvAddCurrentTaskToDelayedList &rArr; vListInsert
+<P><STRONG><a name="[21]"></a>Uart_GetString</STRONG> (Thumb, 74 bytes, Stack size 32 bytes, uart.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 116 + Unknown Stack Size
+<LI>Call Chain = Uart_GetString &rArr; xQueueReceive &rArr; vTaskPlaceOnEventList &rArr; prvAddCurrentTaskToDelayedList &rArr; vListInsert
 </UL>
 <BR>[Calls]<UL><LI><a href="#[2f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueReceive
+<LI><a href="#[2c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CopyString
 </UL>
 <BR>[Called By]<UL><LI><a href="#[c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UartRx
 </UL>
@@ -679,7 +681,7 @@ Global Symbols
 <LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskSuspendAll
 <LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xTaskResumeAll
 </UL>
-<BR>[Called By]<UL><LI><a href="#[21]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cUart_GetChar
+<BR>[Called By]<UL><LI><a href="#[21]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Uart_GetString
 </UL>
 
 <P><STRONG><a name="[70]"></a>xQueueSemaphoreTake</STRONG> (Thumb, 222 bytes, Stack size 40 bytes, queue.o(.text), UNUSED)
