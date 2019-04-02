@@ -8,14 +8,20 @@ Project File Date:  03/21/2019
 
 <h2>Output:</h2>
 Build target 'RTOSDemo_THUMB'
-compiling main.c...
 linking...
-Program Size: Code=7396 RO-data=32 RW-data=104 ZI-data=8024  
+Program Size: Code=9724 RO-data=32 RW-data=104 ZI-data=8008  
 FromELF: creating hex file...
 ".\bin\RTOSDemo.axf" - 0 Error(s), 0 Warning(s).
 </pre>
 </body>
 </html>
-: Code=7396 RO-data=32 RW-data=104 ZI-data=8024  
+l\ARM\Inc\Philips\LPC210X.H")
+  #define S0SPCR         (*((volatile unsigned short*) 0xE0020000))
+C:\Program Files\Keil\ARM\Inc\Philips\lpc21xx.h(200): warning:  #47-D: incompatible redefinition of macro "S0SPDR" (declared at line 181 of "C:\Program Files\Keil\ARM\Inc\Philips\LPC210X.H")
+  #define S0SPDR         (*((volatile unsigned short*) 0xE0020008))
+uart.c: 2 warnings, 0 errors
+linking...
+Program Size: Code=9724 RO-data=32 RW-data=104 ZI-data=8008  
 FromELF: creating hex file...
-".\bin\RTOSDemo.axf" - 0 Error(s), 1 Warning(s).
+".\bin\RTOSDemo.axf" - 0 Error(s), 2 Warning(s).
+r(s), 2 Warning(s).

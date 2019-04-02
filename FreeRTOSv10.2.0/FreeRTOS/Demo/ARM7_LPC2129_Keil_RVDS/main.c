@@ -5,13 +5,8 @@
 
 void UartRx( void *pvParameters ){
 
-		char acBuffer[UART_RX_BUFFER_SIZE];
-
 		while(1){
-			
-			while (eUartRx_GetStatus() == EMPTY){};
-				Uart_GetStringCopy(acBuffer);
-				Led_Toggle(0);
+			Led_Toggle(cUart_GetChar() - '0');
 		}
 }
 

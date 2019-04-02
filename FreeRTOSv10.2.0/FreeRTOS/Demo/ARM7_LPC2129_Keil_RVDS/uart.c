@@ -1,6 +1,8 @@
 #include <LPC210X.H>
 #include "uart.h"
 #include "string.h"
+#include "FreeRTOS.h"
+#include "queue.h"
 
 /************ UART ************/
 //pin control register
@@ -28,6 +30,7 @@
 // VICVectCntlx Vector Control Registers
 #define mIRQ_SLOT_ENABLE                           0x00000020
 
+xQueueHandle UartQueue;
 
 struct TransmiterBuffer{
 	char cData[ UART_TX_BUFFER_SIZE ];
@@ -37,15 +40,13 @@ struct TransmiterBuffer{
 };
 struct TransmiterBuffer sTransmiterBuffer;
 
-
-char cOdebranyZnak;
-
-struct RecieverBuffer{
-	char cData[ UART_RX_BUFFER_SIZE ];
-	unsigned char ucCharCtr;
-	enum eRecieverStatus eStatus;
-};
-struct RecieverBuffer sRxBuffer;
+char cUart_GetChar( void ) {
+	
+	char cBuffer = 0;
+	
+	xQueueReceive(UartQueue, &cBuffer, portMAX_DELAY);
+	return cBuffer;
+}
 
 char Transmiter_GetCharacterFromBuffer(void){
 	
@@ -81,30 +82,6 @@ enum eTransmiterStatus eUartTx_GetStatus(void){
 	return(sTransmiterBuffer.eStatus);
 }
 
-void Reciever_PutCharacterToBuffer(char cCharacter){
-	
-	if(sRxBuffer.ucCharCtr >= UART_RX_BUFFER_SIZE){
-		sRxBuffer.eStatus = OVERFLOW;
-	}else if (cCharacter == TERMINATOR){
-		sRxBuffer.cData[sRxBuffer.ucCharCtr] = NULL;
-		sRxBuffer.eStatus = READY;
-		sRxBuffer.ucCharCtr = 0;
-	}else{
-		sRxBuffer.cData[sRxBuffer.ucCharCtr] = cCharacter;
-		sRxBuffer.ucCharCtr++;
-	}
-}
-
-enum eRecieverStatus eUartRx_GetStatus(void){
-	
-	return(sRxBuffer.eStatus);
-}
-
-void Uart_GetStringCopy(char * ucDestination){
-	
-	CopyString(sRxBuffer.cData, ucDestination);
-	sRxBuffer.eStatus = EMPTY;
-}
 ///////////////////////////////////////////
 __irq void UART0_Interrupt (void) {
    // jesli przerwanie z odbiornika (Rx)
@@ -113,8 +90,9 @@ __irq void UART0_Interrupt (void) {
 
    if      ((uiCopyOfU0IIR & mINTERRUPT_PENDING_IDETIFICATION_BITFIELD) == mRX_DATA_AVALIABLE_INTERRUPT_PENDING) // odebrano znak
    {
-      cOdebranyZnak = U0RBR;
-	  Reciever_PutCharacterToBuffer(cOdebranyZnak);
+		 BaseType_t xHigherPriorityTaskWoken = pdTRUE;
+     unsigned char ucBuffer = U0RBR;
+		 xQueueSendFromISR(UartQueue, &ucBuffer, &xHigherPriorityTaskWoken);
    } 
    
    if ((uiCopyOfU0IIR & mINTERRUPT_PENDING_IDETIFICATION_BITFIELD) == mTHRE_INTERRUPT_PENDING)              // wyslano znak - nadajnik pusty 
@@ -134,6 +112,7 @@ void UART_InitWithInt(unsigned int uiBaudRate){
 	unsigned long ulDivisor, ulWantedClock;
 	ulWantedClock=uiBaudRate*16;
 	ulDivisor=15000000/ulWantedClock;
+	
 	// UART
 	PINSEL0 = PINSEL0 | 0x55;                                     // ustawic piny uar0 odbiornik nadajnik
 	U0LCR  |= m8BIT_UART_WORD_LENGTH | mDIVISOR_LATCH_ACCES_BIT; // d³ugosc s³owa, DLAB = 1
@@ -148,5 +127,6 @@ void UART_InitWithInt(unsigned int uiBaudRate){
 	VICVectCntl1  = mIRQ_SLOT_ENABLE | VIC_UART0_CHANNEL_NR;     // use it for UART 0 Interrupt
 	VICIntEnable |= (0x1 << VIC_UART0_CHANNEL_NR);               // Enable UART 0 Interrupt Channel
 
+	UartQueue = xQueueCreate(UART_RX_BUFFER_SIZE, sizeof(char));
 }
 
