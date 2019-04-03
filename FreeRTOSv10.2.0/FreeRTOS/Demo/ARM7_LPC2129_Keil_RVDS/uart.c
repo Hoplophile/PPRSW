@@ -30,15 +30,7 @@
 // VICVectCntlx Vector Control Registers
 #define mIRQ_SLOT_ENABLE                           0x00000020
 
-xQueueHandle UartQueue;
-
-struct TransmiterBuffer{
-	char cData[ UART_TX_BUFFER_SIZE ];
-	enum eTransmiterStatus eStatus;
-	unsigned char fLastCharacter;
-	unsigned char ucCharCtr;
-};
-struct TransmiterBuffer sTransmiterBuffer;
+xQueueHandle UartRxQueue, UartTxQueue;
 
 void Uart_GetString( char* pcString ) {
 	
@@ -46,7 +38,7 @@ void Uart_GetString( char* pcString ) {
 	char cStringBuffer[UART_RX_BUFFER_SIZE];
 	unsigned char ucStringIndex = 0;
 	
-	xQueueReceive(UartQueue, &cCharBuffer, portMAX_DELAY);
+	xQueueReceive(UartRxQueue, &cCharBuffer, portMAX_DELAY);
 	
 	while((cCharBuffer != TERMINATOR) && (ucStringIndex < UART_RX_BUFFER_SIZE - 1)){
 		cStringBuffer[ucStringIndex] = cCharBuffer;
@@ -56,39 +48,20 @@ void Uart_GetString( char* pcString ) {
 	cStringBuffer[ucStringIndex] = NULL;
 	CopyString(cStringBuffer, pcString);
 }
-
-char Transmiter_GetCharacterFromBuffer(void){
 	
-	char ucAktualnyZnak;
+void Uart_PutString(char* pcString){
 	
-	ucAktualnyZnak = sTransmiterBuffer.cData [sTransmiterBuffer.ucCharCtr];
-
-	if(ucAktualnyZnak == NULL){
-		if(sTransmiterBuffer.fLastCharacter==0){
-			sTransmiterBuffer.fLastCharacter=1;
-			return(TERMINATOR);
-		}else{
-			sTransmiterBuffer.fLastCharacter=0;
-			sTransmiterBuffer.eStatus=FREE;
-			return(NULL);
-		}
-	}else{
-		sTransmiterBuffer.ucCharCtr++;
-		return(ucAktualnyZnak);
-	}	
-}
+	unsigned char ucStringIndex = 0;
+	unsigned char ucTerminator = TERMINATOR;
+	char cFirstChar = NULL;
 	
-void Transmiter_SendString(char cString[]){
-	
-	sTransmiterBuffer.eStatus=BUSY;
-	sTransmiterBuffer.ucCharCtr=0;
-	CopyString(cString,sTransmiterBuffer.cData);
-	U0THR = Transmiter_GetCharacterFromBuffer();
-}
-
-enum eTransmiterStatus eUartTx_GetStatus(void){
-
-	return(sTransmiterBuffer.eStatus);
+	while(( pcString[ucStringIndex] != NULL ) && ( ucStringIndex < UART_TX_BUFFER_SIZE - 1 )){
+		xQueueSend(UartTxQueue, &pcString[ucStringIndex], portMAX_DELAY);
+		ucStringIndex++;
+	}
+	xQueueSend(UartTxQueue, &ucTerminator, portMAX_DELAY);
+	xQueueReceive(UartTxQueue, &cFirstChar, portMAX_DELAY);
+	U0THR = cFirstChar;
 }
 
 ///////////////////////////////////////////
@@ -97,18 +70,19 @@ __irq void UART0_Interrupt (void) {
    
    unsigned int uiCopyOfU0IIR=U0IIR; // odczyt U0IIR powoduje jego kasowanie wiec lepiej pracowac na kopii
 
-   if      ((uiCopyOfU0IIR & mINTERRUPT_PENDING_IDETIFICATION_BITFIELD) == mRX_DATA_AVALIABLE_INTERRUPT_PENDING) // odebrano znak
+   if ((uiCopyOfU0IIR & mINTERRUPT_PENDING_IDETIFICATION_BITFIELD) == mRX_DATA_AVALIABLE_INTERRUPT_PENDING) // odebrano znak
    {
 		 BaseType_t xHigherPriorityTaskWoken = pdTRUE;
      unsigned char ucBuffer = U0RBR;
-		 xQueueSendFromISR(UartQueue, &ucBuffer, &xHigherPriorityTaskWoken);
+		 xQueueSendFromISR(UartRxQueue, &ucBuffer, &xHigherPriorityTaskWoken);
    } 
    
    if ((uiCopyOfU0IIR & mINTERRUPT_PENDING_IDETIFICATION_BITFIELD) == mTHRE_INTERRUPT_PENDING)              // wyslano znak - nadajnik pusty 
    {
-			if(sTransmiterBuffer.eStatus==BUSY){
-				U0THR = Transmiter_GetCharacterFromBuffer();
-			}
+			BaseType_t xHigherPriorityTaskWoken = pdTRUE;
+			unsigned char ucBuffer = 0;
+			xQueueReceiveFromISR(UartTxQueue, &ucBuffer, &xHigherPriorityTaskWoken);
+			U0THR = ucBuffer;
 			// narazie nic nie wysyłamy
    }
 
@@ -136,6 +110,7 @@ void UART_InitWithInt(unsigned int uiBaudRate){
 	VICVectCntl1  = mIRQ_SLOT_ENABLE | VIC_UART0_CHANNEL_NR;     // use it for UART 0 Interrupt
 	VICIntEnable |= (0x1 << VIC_UART0_CHANNEL_NR);               // Enable UART 0 Interrupt Channel
 
-	UartQueue = xQueueCreate(UART_RX_BUFFER_SIZE, sizeof(char));
+	UartRxQueue = xQueueCreate(UART_RX_BUFFER_SIZE, sizeof(char));
+	UartTxQueue = xQueueCreate(UART_TX_BUFFER_SIZE, sizeof(char));
 }
 

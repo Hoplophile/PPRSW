@@ -10,13 +10,7 @@ void UartRx( void *pvParameters ){
 
 		while(1){
 			Uart_GetString(acBuffer);
-			
-			if(eCompareString(acBuffer, "zero") == EQUAL){
-				Led_Toggle(0);				
-			}
-			else if(eCompareString(acBuffer, "jeden") == EQUAL){
-				Led_Toggle(1);				
-			}					
+			Uart_PutString(acBuffer);					
 		}
 }
 

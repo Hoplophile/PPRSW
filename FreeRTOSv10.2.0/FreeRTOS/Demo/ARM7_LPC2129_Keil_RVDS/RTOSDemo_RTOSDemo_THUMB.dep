@@ -1,6 +1,6 @@
 Dependencies for Project 'RTOSDemo', Target 'RTOSDemo_THUMB': (DO NOT MODIFY !)
 F (.\Startup.s)(0x5C93FD68)(--cpu ARM7TDMI --pd "__EVAL SETA 1" -g --apcs=interwork -I..\..\Source\portable\RVDS\ARM7_LPC21xx-I "C:\Program Files\Keil\ARM\RV31\INC"-I "C:\Program Files\Keil\ARM\CMSIS\Include"-I "C:\Program Files\Keil\ARM\Inc\Philips"--list .\startup.lst --xref -o .\bin\startup.o --depend .\bin\startup.d)
-F (.\main.c)(0x5CA3DF79)(--thumb -c --cpu ARM7TDMI -D__EVAL -g -O0 --apcs=interwork -I. -I..\..\Source\portable\RVDS\ARM7_LPC21xx -I..\Common\include -I..\..\Source\include-I "C:\Program Files\Keil\ARM\RV31\INC"-I "C:\Program Files\Keil\ARM\CMSIS\Include"-I "C:\Program Files\Keil\ARM\Inc\Philips"-DARM7_LPC21xx_KEIL_RVDS -DKEIL_THUMB_INTERWORK-o .\bin\main.o --omf_browse .\bin\main.crf --depend .\bin\main.d)
+F (.\main.c)(0x5CA450E1)(--thumb -c --cpu ARM7TDMI -D__EVAL -g -O0 --apcs=interwork -I. -I..\..\Source\portable\RVDS\ARM7_LPC21xx -I..\Common\include -I..\..\Source\include-I "C:\Program Files\Keil\ARM\RV31\INC"-I "C:\Program Files\Keil\ARM\CMSIS\Include"-I "C:\Program Files\Keil\ARM\Inc\Philips"-DARM7_LPC21xx_KEIL_RVDS -DKEIL_THUMB_INTERWORK-o .\bin\main.o --omf_browse .\bin\main.crf --depend .\bin\main.d)
 I (..\..\Source\include\FreeRTOS.h)(0x5C93FD68)
 I (C:\Program Files\Keil\ARM\ARMCC\include\stddef.h)(0x51C827C4)
 I (C:\Program Files\Keil\ARM\ARMCC\include\stdint.h)(0x51C827C4)
@@ -14,16 +14,16 @@ I (..\..\Source\include\mpu_wrappers.h)(0x5C93FD68)
 I (..\..\Source\include\task.h)(0x5C93FD68)
 I (..\..\Source\include\list.h)(0x5C93FD68)
 I (led.h)(0x5C93FD68)
-I (uart.h)(0x5CA3D7F2)
+I (uart.h)(0x5CA44F5A)
 I (string.h)(0x5C93FD68)
 F (.\led.c)(0x5C93FD68)(--thumb -c --cpu ARM7TDMI -D__EVAL -g -O0 --apcs=interwork -I. -I..\..\Source\portable\RVDS\ARM7_LPC21xx -I..\Common\include -I..\..\Source\include-I "C:\Program Files\Keil\ARM\RV31\INC"-I "C:\Program Files\Keil\ARM\CMSIS\Include"-I "C:\Program Files\Keil\ARM\Inc\Philips"-DARM7_LPC21xx_KEIL_RVDS -DKEIL_THUMB_INTERWORK-o .\bin\led.o --omf_browse .\bin\led.crf --depend .\bin\led.d)
 I (led.h)(0x5C93FD68)
 I (C:\Program Files\Keil\ARM\Inc\Philips\LPC21xx.H)(0x532C6258)
 F (.\string.c)(0x5C93FD68)(--thumb -c --cpu ARM7TDMI -D__EVAL -g -O0 --apcs=interwork -I. -I..\..\Source\portable\RVDS\ARM7_LPC21xx -I..\Common\include -I..\..\Source\include-I "C:\Program Files\Keil\ARM\RV31\INC"-I "C:\Program Files\Keil\ARM\CMSIS\Include"-I "C:\Program Files\Keil\ARM\Inc\Philips"-DARM7_LPC21xx_KEIL_RVDS -DKEIL_THUMB_INTERWORK-o .\bin\string.o --omf_browse .\bin\string.crf --depend .\bin\string.d)
 I (string.h)(0x5C93FD68)
-F (.\uart.c)(0x5CA3DD77)(--thumb -c --cpu ARM7TDMI -D__EVAL -g -O0 --apcs=interwork -I. -I..\..\Source\portable\RVDS\ARM7_LPC21xx -I..\Common\include -I..\..\Source\include-I "C:\Program Files\Keil\ARM\RV31\INC"-I "C:\Program Files\Keil\ARM\CMSIS\Include"-I "C:\Program Files\Keil\ARM\Inc\Philips"-DARM7_LPC21xx_KEIL_RVDS -DKEIL_THUMB_INTERWORK-o .\bin\uart.o --omf_browse .\bin\uart.crf --depend .\bin\uart.d)
+F (.\uart.c)(0x5CA49E4B)(--thumb -c --cpu ARM7TDMI -D__EVAL -g -O0 --apcs=interwork -I. -I..\..\Source\portable\RVDS\ARM7_LPC21xx -I..\Common\include -I..\..\Source\include-I "C:\Program Files\Keil\ARM\RV31\INC"-I "C:\Program Files\Keil\ARM\CMSIS\Include"-I "C:\Program Files\Keil\ARM\Inc\Philips"-DARM7_LPC21xx_KEIL_RVDS -DKEIL_THUMB_INTERWORK-o .\bin\uart.o --omf_browse .\bin\uart.crf --depend .\bin\uart.d)
 I (C:\Program Files\Keil\ARM\Inc\Philips\LPC210X.H)(0x532C6258)
-I (uart.h)(0x5CA3D7F2)
+I (uart.h)(0x5CA44F5A)
 I (string.h)(0x5C93FD68)
 I (..\..\Source\include\FreeRTOS.h)(0x5C93FD68)
 I (C:\Program Files\Keil\ARM\ARMCC\include\stddef.h)(0x51C827C4)
@@ -39,7 +39,7 @@ I (..\..\Source\include\queue.h)(0x5C93FD68)
 I (..\..\Source\include\task.h)(0x5C93FD68)
 I (..\..\Source\include\list.h)(0x5C93FD68)
 F (.\string.h)(0x5C93FD68)()
-F (.\uart.h)(0x5CA3D7F2)()
+F (.\uart.h)(0x5CA44F5A)()
 F (.\keyboard.c)(0x5C9B76E8)(--thumb -c --cpu ARM7TDMI -D__EVAL -g -O0 --apcs=interwork -I. -I..\..\Source\portable\RVDS\ARM7_LPC21xx -I..\Common\include -I..\..\Source\include-I "C:\Program Files\Keil\ARM\RV31\INC"-I "C:\Program Files\Keil\ARM\CMSIS\Include"-I "C:\Program Files\Keil\ARM\Inc\Philips"-DARM7_LPC21xx_KEIL_RVDS -DKEIL_THUMB_INTERWORK-o .\bin\keyboard.o --omf_browse .\bin\keyboard.crf --depend .\bin\keyboard.d)
 I (keyboard.h)(0x5C9B76E8)
 I (C:\Program Files\Keil\ARM\Inc\Philips\LPC21xx.H)(0x532C6258)
