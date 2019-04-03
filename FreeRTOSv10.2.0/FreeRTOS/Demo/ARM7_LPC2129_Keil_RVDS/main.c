@@ -2,6 +2,7 @@
 #include "task.h"
 #include "led.h"
 #include "uart.h"
+#include "string.h"
 
 void UartRx( void *pvParameters ){
 	
@@ -9,7 +10,13 @@ void UartRx( void *pvParameters ){
 
 		while(1){
 			Uart_GetString(acBuffer);
-			Led_Toggle(acBuffer[0]-'0');
+			
+			if(eCompareString(acBuffer, "zero") == EQUAL){
+				Led_Toggle(0);				
+			}
+			else if(eCompareString(acBuffer, "jeden") == EQUAL){
+				Led_Toggle(1);				
+			}					
 		}
 }
 
